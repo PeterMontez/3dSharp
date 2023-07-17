@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Peter\\Desktop\\3dSharp\\3dSharp.csproj": {}
+    "C:\\Users\\disrct\\Desktop\\3dSharp\\3dSharp.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Peter\\Desktop\\3dSharp\\3dSharp.csproj": {
+    "C:\\Users\\disrct\\Desktop\\3dSharp\\3dSharp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Peter\\Desktop\\3dSharp\\3dSharp.csproj",
+        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\3dSharp\\3dSharp.csproj",
         "projectName": "3dSharp",
-        "projectPath": "c:\\Users\\Peter\\Desktop\\3dSharp\\3dSharp.csproj",
-        "packagesPath": "C:\\Users\\Peter\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Peter\\Desktop\\3dSharp\\obj\\",
+        "projectPath": "C:\\Users\\disrct\\Desktop\\3dSharp\\3dSharp.csproj",
+        "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\disrct\\Desktop\\3dSharp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Peter\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

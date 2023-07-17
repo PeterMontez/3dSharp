@@ -31,9 +31,9 @@ public class Angle
 
     public Angle(double yaw, double pitch, double roll)
     {
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.roll = roll;
+        this.yaw = AngleFixer(yaw);
+        this.pitch = AngleFixer(pitch);
+        this.roll = AngleFixer(roll);
     }
 
     public void YawMoveTo(double yaw) => this.yaw = (yaw - ((yaw % 360)*360));
@@ -42,10 +42,33 @@ public class Angle
 
     public void RollMoveTo(double roll) => this.roll = (roll - ((roll % 360)*360));
 
-    public void YawAdd(double yaw) => this.yaw = (this.yaw + yaw) - (((this.yaw + yaw) % 360)*360);
+    public void YawAdd(double yaw)
+    {
+        this.yaw += yaw;
+        this.yaw = AngleFixer(this.yaw);
+    }
 
-    public void PitchAdd(double pitch) => this.pitch = (this.pitch + pitch) - (((this.pitch + pitch) % 360)*360);
+    public void PitchAdd(double pitch)
+    {
+        this.pitch += pitch;
+        this.pitch = AngleFixer(this.pitch);
+    }
 
-    public void RollAdd(double roll) => this.roll = (this.roll + roll) - (((this.roll + roll) % 360)*360);
+    public void RollAdd(double roll)
+    {
+        this.roll += roll;
+        this.roll = AngleFixer(this.roll);
+    }
+
+    public double AngleFixer(double angle)
+    {
+        if (angle < 0)
+            angle = 360 - (-angle % 360);
+
+        if (angle >= 360)
+            angle %= 360;
+
+        return angle;
+    }
 
 }
