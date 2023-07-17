@@ -53,7 +53,6 @@ public class CameraView
         result = ((directionVector[0] * (-center.X)) + (directionVector[1] * (-center.Y)) + (directionVector[2] * (-center.Z)));
 
         return new Plane(-directionVector[0], -directionVector[1], -directionVector[2], result);
-
     }
 
 }
