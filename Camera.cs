@@ -44,7 +44,7 @@ public class Angle
 
     public void YawAdd(double yaw)
     {
-        this.yaw += yaw;
+        this.yaw = yaw;
         this.yaw = AngleFixer(this.yaw);
     }
 
