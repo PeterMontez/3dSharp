@@ -14,13 +14,27 @@ public class CameraView
 
     public Plane plane { get; set; }
 
-    public CameraView(Point3d position, double FOV, Angle angle, Ratio ratio)
+    public Angle angle { get; set; }
+
+    public Angle screenAngle { get; set; } = new Angle(0, 0, 0);
+
+    public double FOV { get; set; }
+
+    public double ratioScale { get; set; }
+
+    public double screenDist { get; set; }
+
+    public CameraView(Point3d position, double FOV, Angle angle, Ratio ratio, double ratioScale)
     {
         this.ratio = ratio;
+        this.FOV = FOV;
+        this.angle = angle;
+        this.ratioScale = ratioScale;
         this.FOVpoint = GetCenter(position, FOV, angle);
         // this.points = GetViewScreen(this.FOVpoint, angle);
         this.position = position;
         this.plane = PlaneFinder(this.FOVpoint, this.position);
+        (this.screenAngle, this.screenDist) = GetScreenAngles(this.ratio, this.FOV, this.angle, this.ratioScale);
     }
 
     public Point3d GetCenter(Point3d position, double FOV, Angle angle)
@@ -50,9 +64,17 @@ public class CameraView
         directionVector[1] = position.Y - center.Y;
         directionVector[2] = position.Z - center.Z;
 
-        result = ((directionVector[0] * (-center.X)) + (directionVector[1] * (-center.Y)) + (directionVector[2] * (-center.Z)));
+        result = (directionVector[0] * (-center.X)) + (directionVector[1] * (-center.Y)) + (directionVector[2] * (-center.Z));
 
         return new Plane(-directionVector[0], -directionVector[1], -directionVector[2], result);
+    }
+
+    public (Angle, double) GetScreenAngles(Ratio ratio, double FOV, Angle camAngle, double ratioScale)
+    {
+        Angle angle = new Angle(AMath.RadToDeg(Math.Atan(ratio.width*ratioScale/2/FOV)), AMath.RadToDeg(Math.Atan(ratio.height*ratioScale/2/FOV)), camAngle.roll);
+        double newDist = Math.Sqrt((ratio.width*ratioScale/2)*(ratio.width*ratioScale/2) + (ratio.height*ratioScale/2)*(ratio.height*ratioScale/2) + FOV*FOV);
+
+        return (angle, newDist);
     }
 
 }
