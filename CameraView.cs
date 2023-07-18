@@ -31,10 +31,10 @@ public class CameraView
         this.angle = angle;
         this.ratioScale = ratioScale;
         this.FOVpoint = GetCenter(position, FOV, angle);
-        // this.points = GetViewScreen(this.FOVpoint, angle);
         this.position = position;
         this.plane = PlaneFinder(this.FOVpoint, this.position);
         (this.screenAngle, this.screenDist) = GetScreenAngles(this.ratio, this.FOV, this.angle, this.ratioScale);
+        this.points = GetViewScreen(this.FOVpoint, angle, this.screenAngle);
     }
 
     public Point3d GetCenter(Point3d position, double FOV, Angle angle)
@@ -43,17 +43,36 @@ public class CameraView
         double Y = FOV * Math.Sin(AMath.DegToRad(angle.pitch));
         double Z = FOV * Math.Sin(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));
 
-        // X = AMath.Round(X, 2);
-        // Y = AMath.Round(Y, 2);
-        // Z = AMath.Round(Z, 2);
-
         return new Point3d(X, Y, Z);
     }
 
-    // public Point3d[] GetViewScreen(Point3d center, Angle angle)
-    // {
+    public Point3d[] GetViewScreen(Point3d center, Angle angle, Angle screenAngle)
+    {
+        Point3d[] points = new Point3d[4];
 
-    // }
+        Angle crrAngle = new Angle(angle.yaw - screenAngle.yaw, angle.pitch - screenAngle.pitch, angle.roll);
+        points[0] = GetPoint(this.position, this.screenDist, crrAngle);
+
+        crrAngle = new Angle(angle.yaw - screenAngle.yaw, angle.pitch + screenAngle.pitch, angle.roll);
+        points[1] = GetPoint(this.position, this.screenDist, crrAngle);
+
+        crrAngle = new Angle(angle.yaw + screenAngle.yaw, angle.pitch + screenAngle.pitch, angle.roll);
+        points[2] = GetPoint(this.position, this.screenDist, crrAngle);
+
+        crrAngle = new Angle(angle.yaw + screenAngle.yaw, angle.pitch - screenAngle.pitch, angle.roll);
+        points[3] = GetPoint(this.position, this.screenDist, crrAngle);
+
+        return points;
+    }
+
+    public Point3d GetPoint(Point3d position, double FOV, Angle angle)
+    {
+        double X = FOV * Math.Cos(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));
+        double Y = FOV * Math.Sin(AMath.DegToRad(angle.pitch));
+        double Z = FOV * Math.Sin(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));
+
+        return new Point3d(X, Y, Z);
+    }
 
     public Plane PlaneFinder(Point3d center, Point3d position)
     {

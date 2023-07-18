@@ -9,66 +9,39 @@ public class Camera
     public Angle angle { get; set; }
     public CameraView cameraView { get; set; }
 
-    public Camera(Point3d position, double FOV, Angle angle)
+    public Camera(Point3d position, double FOV, Angle angle, Ratio ratio, double ratioScale)
     {
         this.position = position;
         this.FOV = FOV;
         this.angle = angle;
+        this.cameraView = new CameraView(position, FOV, angle, ratio, ratioScale);
     }
-
-    public void YawAdd(double yaw) => angle.YawAdd(yaw);
-
-    public void PitchAdd(double pitch) => angle.PitchAdd(pitch);
-
-    public void Roll(double roll) => angle.RollAdd(roll);
-}
-
-public class Angle
-{
-    public double yaw { get; set; }
-    public double pitch { get; set; }
-    public double roll { get; set; }
-
-    public Angle(double yaw, double pitch, double roll)
-    {
-        this.yaw = AngleFixer(yaw);
-        this.pitch = AngleFixer(pitch);
-        this.roll = AngleFixer(roll);
-    }
-
-    public void YawMoveTo(double yaw) => this.yaw = (yaw - ((yaw % 360)*360));
-
-    public void PitchMoveTo(double pitch) => this.pitch = (pitch - ((pitch % 360)*360));
-
-    public void RollMoveTo(double roll) => this.roll = (roll - ((roll % 360)*360));
 
     public void YawAdd(double yaw)
     {
-        this.yaw += yaw;
-        this.yaw = AngleFixer(this.yaw);
+        angle.YawAdd(yaw);
+        cameraView.angle.YawAdd(yaw);
     }
 
     public void PitchAdd(double pitch)
     {
-        this.pitch += pitch;
-        this.pitch = AngleFixer(this.pitch);
+        angle.PitchAdd(pitch);
+        cameraView.angle.PitchAdd(pitch);
     }
 
     public void RollAdd(double roll)
     {
-        this.roll += roll;
-        this.roll = AngleFixer(this.roll);
+        angle.RollAdd(roll);
+        cameraView.angle.RollAdd(roll);
     }
 
-    public double AngleFixer(double angle)
+    public void Translate(double X, double Y, double Z)
     {
-        if (angle < 0)
-            angle = 360 - (-angle % 360);
-
-        if (angle >= 360)
-            angle %= 360;
-
-        return angle;
+        this.position.X += X;
+        this.position.Y += Y;
+        this.position.Z += Z;
     }
+
+    public void MoveTo(Point3d position) => this.position = position;
 
 }
