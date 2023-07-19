@@ -19,21 +19,18 @@ public class Camera
 
     public void YawAdd(double yaw)
     {
-        angle.YawAdd(yaw);
         cameraView.angle.YawAdd(yaw);
         cameraView.Refresh();
     }
 
     public void PitchAdd(double pitch)
     {
-        angle.PitchAdd(pitch);
         cameraView.angle.PitchAdd(pitch);
         cameraView.Refresh();
     }
 
     public void RollAdd(double roll)
     {
-        angle.RollAdd(roll);
         cameraView.angle.RollAdd(roll);
         cameraView.Refresh();
     }

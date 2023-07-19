@@ -14,7 +14,7 @@ public class Line
     public void SetLine(Point3d p1, Point3d p2)
     {
         X[0] = p1.X;
-        Y[1] = p1.Y;
+        Y[0] = p1.Y;
         Z[0] = p1.Z;
 
         X[1] = p2.X - p1.X;

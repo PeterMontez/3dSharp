@@ -65,14 +65,20 @@ public class BruteRenderer
     {
         Point point = new Point();
 
-        double dist2 = ratio.scrWidth/ratio.width * (PointDist(point3d, points[2]));
-        double dist3 = ratio.scrWidth/ratio.width * (PointDist(point3d, points[3])); 
+        double dist2 = (PointDist(point3d, points[2]));
+        double dist3 = (PointDist(point3d, points[3])); 
 
-        double p2Cos = ((dist3*dist3) - (dist2*dist2) - (ratio.scrHeight*ratio.scrHeight)) / (-2 * dist2 * ratio.scrHeight);
+        double p2Cos = ((dist3*dist3) - (dist2*dist2) - (ratio.height*ratio.height)) / (-2 * dist2 * ratio.height);
 
-        double X = ratio.scrWidth - (dist2 * p2Cos);
+        double Y = p2Cos * dist2 * ratio.scrHeight/ratio.height;
 
-        double Y = Math.Sin(Math.Acos(p2Cos)) * dist2;
+        double X = ratio.scrWidth - (Math.Sin(Math.Acos(p2Cos)) * dist2 * ratio.scrHeight/ratio.height);
+
+        // double X = Math.Sqrt((dist2*dist2) - (Y*Y));
+
+        // double Y = ratio.scrWidth - (dist2 * Math.Sin(Math.Acos(p2Cos)) * ratio.scrWidth/ratio.width);
+
+        // double X = p2Cos * dist2 * ratio.scrWidth/ratio.width;
 
         return new Point((int)X, (int)Y);
 
