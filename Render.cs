@@ -41,7 +41,7 @@ public class BruteRenderer
             rendered.Add(result);
         }
 
-        return new List<Triangle2d>();
+        return this.rendered;
     }
 
     public Point3d LinePlaneIntersec(Line line, Plane plane)
@@ -68,11 +68,11 @@ public class BruteRenderer
         double dist2 = ratio.scrWidth/ratio.width * (PointDist(point3d, points[2]));
         double dist3 = ratio.scrWidth/ratio.width * (PointDist(point3d, points[3])); 
 
-        double p2Cos = ((ratio.scrHeight * ratio.scrHeight) + (dist2 * dist2) + (dist3 * dist3)) / 2 * ratio.scrHeight * dist2;
+        double p2Cos = ((dist3*dist3) - (dist2*dist2) - (ratio.scrHeight*ratio.scrHeight)) / (-2 * dist2 * ratio.scrHeight);
 
         double X = ratio.scrWidth - (dist2 * p2Cos);
 
-        double Y = ratio.scrHeight - (Math.Sin(Math.Acos(p2Cos)) * dist2);
+        double Y = Math.Sin(Math.Acos(p2Cos)) * dist2;
 
         return new Point((int)X, (int)Y);
 

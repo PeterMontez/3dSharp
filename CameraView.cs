@@ -37,6 +37,14 @@ public class CameraView
         this.points = GetViewScreen(this.FOVpoint, angle, this.screenAngle);
     }
 
+    public void Refresh()
+    {
+        FOVpoint = GetCenter(position, FOV, angle);
+        plane = PlaneFinder(FOVpoint, position);
+        (screenAngle, screenDist) = GetScreenAngles(ratio, FOV, angle, ratioScale);
+        points = GetViewScreen(FOVpoint, angle, screenAngle);
+    }
+
     public Point3d GetCenter(Point3d position, double FOV, Angle angle)
     {
         double X = FOV * Math.Cos(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));

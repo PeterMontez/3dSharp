@@ -27,5 +27,10 @@ public class Point3d
         return 4;
     }   
 
+    public override string ToString()
+    {
+        return $"{X}, {Y}, {Z}";
+    }
+
 }
 

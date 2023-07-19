@@ -21,18 +21,21 @@ public class Camera
     {
         angle.YawAdd(yaw);
         cameraView.angle.YawAdd(yaw);
+        cameraView.Refresh();
     }
 
     public void PitchAdd(double pitch)
     {
         angle.PitchAdd(pitch);
         cameraView.angle.PitchAdd(pitch);
+        cameraView.Refresh();
     }
 
     public void RollAdd(double roll)
     {
         angle.RollAdd(roll);
         cameraView.angle.RollAdd(roll);
+        cameraView.Refresh();
     }
 
     public void Translate(double X, double Y, double Z)
@@ -40,6 +43,7 @@ public class Camera
         this.position.X += X;
         this.position.Y += Y;
         this.position.Z += Z;
+        cameraView.Refresh();
     }
 
     public void MoveTo(Point3d position) => this.position = position;
