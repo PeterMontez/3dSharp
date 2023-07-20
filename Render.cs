@@ -82,7 +82,7 @@ public class BruteRenderer
 
         double X2 = p12cos * dist1;
 
-        X = X2*0.96 > rWidth - X ? rWidth + X : rWidth - X;
+        X = X2*0.97 > rWidth - X ? rWidth + X : rWidth - X;
 
         // double X = Math.Sqrt((dist2*dist2) - (Y*Y));
 
