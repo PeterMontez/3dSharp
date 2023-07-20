@@ -65,22 +65,32 @@ public class BruteRenderer
     {
         Point point = new Point();
 
+        double dist1 = (PointDist(point3d, points[1]));
         double dist2 = (PointDist(point3d, points[2]));
-        double dist3 = (PointDist(point3d, points[3])); 
+        double dist3 = (PointDist(point3d, points[3]));
 
-        double p2Cos = ((dist3*dist3) - (dist2*dist2) - (ratio.height*ratio.height)) / (-2 * dist2 * ratio.height);
+        double rHeight = (PointDist(points[2], points[3]));
+        double rWidth = (PointDist(points[1], points[2]));
 
-        double Y = p2Cos * dist2 * ratio.scrHeight/ratio.height;
+        double p23Cos = ((dist3*dist3) - (dist2*dist2) - (rHeight*rHeight)) / (-2 * dist2 * rHeight);
 
-        double X = ratio.scrWidth - (Math.Sin(Math.Acos(p2Cos)) * dist2 * ratio.scrHeight/ratio.height);
+        double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
+
+        double Y = p23Cos * dist2;
+
+        double X = Math.Sin(Math.Acos(p23Cos)) * dist2;
+
+        double X2 = p12cos * dist1;
+
+        X = X2*0.96 > rWidth - X ? rWidth + X : rWidth - X;
 
         // double X = Math.Sqrt((dist2*dist2) - (Y*Y));
 
-        // double Y = ratio.scrWidth - (dist2 * Math.Sin(Math.Acos(p2Cos)) * ratio.scrWidth/ratio.width);
+        // double Y = ratio.scrWidth - (dist2 * Math.Sin(Math.Acos(p23Cos)) * ratio.scrWidth/ratio.width);
 
-        // double X = p2Cos * dist2 * ratio.scrWidth/ratio.width;
+        // double X = p23Cos * dist2 * ratio.scrWidth/ratio.width;
 
-        return new Point((int)X, (int)Y);
+        return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
 
     }
 }
