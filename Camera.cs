@@ -14,7 +14,7 @@ public class Camera
         this.position = position;
         this.FOV = FOV;
         this.angle = angle;
-        this.cameraView = new CameraView(position, FOV, angle, ratio, ratioScale);
+        this.cameraView = new CameraView(this.position, this.FOV, this.angle, ratio, ratioScale);
     }
 
     public void YawAdd(double yaw)

@@ -34,7 +34,7 @@ public class CameraView
         this.position = position;
         this.plane = PlaneFinder(this.FOVpoint, this.position);
         (this.screenAngle, this.screenDist) = GetScreenAngles(this.ratio, this.FOV, this.angle, this.ratioScale);
-        this.points = GetViewScreen(this.FOVpoint, angle, this.screenAngle);
+        this.points = GetViewScreen(this.FOVpoint, angle, this.screenAngle, this.plane);
     }
 
     public void Refresh()
@@ -42,7 +42,7 @@ public class CameraView
         FOVpoint = GetCenter(position, FOV, angle);
         plane = PlaneFinder(FOVpoint, position);
         (screenAngle, screenDist) = GetScreenAngles(ratio, FOV, angle, ratioScale);
-        points = GetViewScreen(FOVpoint, angle, screenAngle);
+        points = GetViewScreen(FOVpoint, angle, screenAngle, plane);
     }
 
     public Point3d GetCenter(Point3d position, double FOV, Angle angle)
@@ -51,26 +51,42 @@ public class CameraView
         double Y = FOV * Math.Sin(AMath.DegToRad(angle.pitch));
         double Z = FOV * Math.Sin(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));
 
-        return new Point3d(X, Y, Z);
+        return new Point3d(X+position.X, Y+position.Y, Z+position.Z);
     }
 
-    public Point3d[] GetViewScreen(Point3d center, Angle angle, Angle screenAngle)
+    public Point3d[] GetViewScreen(Point3d center, Angle angle, Angle screenAngle, Plane plane)
     {
         Point3d[] points = new Point3d[4];
 
-        Angle crrAngle = new Angle(angle.yaw - screenAngle.yaw, angle.pitch - screenAngle.pitch, angle.roll);
-        points[0] = GetPoint(this.position, this.screenDist, crrAngle);
+        Angle crrAngle = new Angle(angle.AngleFixer(angle.yaw - screenAngle.yaw), angle.AngleFixer(angle.pitch - screenAngle.pitch), angle.roll);
+        // points[0] = GetPoint(this.position, this.screenDist, crrAngle);
+        points[0] = LinePlaneIntersec(new Line(position, GetPoint(this.position, FOV*10, crrAngle)), plane);
 
-        crrAngle = new Angle(angle.yaw - screenAngle.yaw, angle.pitch + screenAngle.pitch, angle.roll);
-        points[1] = GetPoint(this.position, this.screenDist, crrAngle);
+        crrAngle = new Angle(angle.AngleFixer(angle.yaw - screenAngle.yaw), angle.AngleFixer(angle.pitch + screenAngle.pitch), angle.roll);
+        // points[1] = GetPoint(this.position, this.screenDist, crrAngle);
+        points[1] = LinePlaneIntersec(new Line(position, GetPoint(this.position, FOV*10, crrAngle)), plane);
 
-        crrAngle = new Angle(angle.yaw + screenAngle.yaw, angle.pitch + screenAngle.pitch, angle.roll);
-        points[2] = GetPoint(this.position, this.screenDist, crrAngle);
+        crrAngle = new Angle(angle.AngleFixer(angle.yaw + screenAngle.yaw), angle.AngleFixer(angle.pitch + screenAngle.pitch), angle.roll);
+        // points[2] = GetPoint(this.position, this.screenDist, crrAngle);
+        points[2] = LinePlaneIntersec(new Line(position, GetPoint(this.position, FOV*10, crrAngle)), plane);
 
-        crrAngle = new Angle(angle.yaw + screenAngle.yaw, angle.pitch - screenAngle.pitch, angle.roll);
-        points[3] = GetPoint(this.position, this.screenDist, crrAngle);
+        crrAngle = new Angle(angle.AngleFixer(angle.yaw + screenAngle.yaw), angle.AngleFixer(angle.pitch - screenAngle.pitch), angle.roll);
+        // points[3] = GetPoint(this.position, this.screenDist, crrAngle);
+        points[3] = LinePlaneIntersec(new Line(position, GetPoint(this.position, FOV*10, crrAngle)), plane);
 
         return points;
+    }
+
+    public Point3d LinePlaneIntersec(Line line, Plane plane)
+    {
+        double n = plane.result - (plane.X * line.X[0] + plane.Y * line.Y[0] + plane.Z * line.Z[0]);
+        double t = n / (plane.X * line.X[1] + plane.Y * line.Y[1] + plane.Z * line.Z[1]);
+
+        double X = line.X[0] + line.X[1] * t;
+        double Y = line.Y[0] + line.Y[1] * t;
+        double Z = line.Z[0] + line.Z[1] * t;
+
+        return new Point3d(X, Y, Z);
     }
 
     public Point3d GetPoint(Point3d position, double FOV, Angle angle)
@@ -103,6 +119,7 @@ public class CameraView
 
         return (angle, newDist);
     }
+
 
 }
 
