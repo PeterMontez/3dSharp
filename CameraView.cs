@@ -95,7 +95,7 @@ public class CameraView
         double Y = FOV * Math.Sin(AMath.DegToRad(angle.pitch));
         double Z = FOV * Math.Sin(AMath.DegToRad(angle.yaw)) * Math.Cos(AMath.DegToRad(angle.pitch));
 
-        return new Point3d(X, Y, Z);
+        return new Point3d(X+position.X, Y+position.Y, Z+position.Z);
     }
 
     public Plane PlaneFinder(Point3d center, Point3d position)

@@ -10,3 +10,15 @@ C:\Users\disrct\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.dll
 C:\Users\disrct\Desktop\3dSharp\obj\Debug\net7.0\refint\3dSharp.dll
 C:\Users\disrct\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.pdb
 C:\Users\disrct\Desktop\3dSharp\obj\Debug\net7.0\ref\3dSharp.dll
+C:\Users\Peter\Desktop\3dSharp\bin\Debug\net7.0\3dSharp.deps.json
+C:\Users\Peter\Desktop\3dSharp\bin\Debug\net7.0\3dSharp.dll
+C:\Users\Peter\Desktop\3dSharp\bin\Debug\net7.0\3dSharp.pdb
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.csproj.AssemblyReference.cache
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.AssemblyInfoInputs.cache
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.AssemblyInfo.cs
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.csproj.CoreCompileInputs.cache
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.dll
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\refint\3dSharp.dll
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\3dSharp.pdb
+C:\Users\Peter\Desktop\3dSharp\obj\Debug\net7.0\ref\3dSharp.dll
