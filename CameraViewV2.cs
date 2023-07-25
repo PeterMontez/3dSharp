@@ -66,19 +66,51 @@ public class CameraView2
 
         Point3d[] temp = {mainPoints[0], mainPoints[1], mainPoints[2], mainPoints[3], mainFOV};
 
+        double rRotation = angle.roll;
+
         for (int i = 0; i < temp.Length; i++)
         {
-            double X = AMath.DgCos(angle.roll) * AMath.DgCos(angle.yaw) * temp[i].X + 
-            (-AMath.DgSin(angle.roll)) * temp[i].Y +
-            AMath.DgCos(angle.roll) * AMath.DgSin(angle.yaw) * temp[i].Z;
+            double Z = temp[i].Z * AMath.DgCos(rRotation) - temp[i].Y * AMath.DgSin(rRotation);
+            double Y = temp[i].Z * AMath.DgSin(rRotation) + temp[i].Y * AMath.DgCos(rRotation);
 
-            double Y = (AMath.DgCos(angle.pitch) * AMath.DgSin(angle.roll) * AMath.DgCos(angle.yaw) + AMath.DgSin(angle.pitch) * AMath.DgSin(angle.yaw)) * temp[i].X +
-            AMath.DgCos(angle.pitch) * AMath.DgCos(angle.roll) * temp[i].Y +
-            (AMath.DgCos(angle.pitch) * AMath.DgSin(angle.roll) * AMath.DgSin(angle.yaw) - AMath.DgSin(angle.pitch) * AMath.DgCos(angle.yaw)) * temp[i].Z;
+            temp[i] = new Point3d(temp[i].X, Y, Z);
+        }
 
-            double Z = (AMath.DgSin(angle.pitch) * AMath.DgSin(angle.roll) * AMath.DgCos(angle.yaw) + AMath.DgCos(angle.pitch) * AMath.DgSin(angle.yaw)) * temp[i].X +
-            AMath.DgSin(angle.pitch) * AMath.DgCos(angle.roll) * temp[i].Y +
-            (AMath.DgSin(angle.pitch) * AMath.DgSin(angle.roll) * AMath.DgSin(angle.yaw) - AMath.DgCos(angle.pitch) * AMath.DgCos(angle.yaw)) * temp[i].Z;
+
+        Angle hRotation = new Angle(0,0,angle.pitch);
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            double X = AMath.DgCos(hRotation.roll) * AMath.DgCos(hRotation.yaw) * temp[i].X + 
+            (-AMath.DgSin(hRotation.roll)) * temp[i].Y +
+            AMath.DgCos(hRotation.roll) * AMath.DgSin(hRotation.yaw) * temp[i].Z;
+
+            double Y = (AMath.DgCos(hRotation.pitch) * AMath.DgSin(hRotation.roll) * AMath.DgCos(hRotation.yaw) + AMath.DgSin(hRotation.pitch) * AMath.DgSin(hRotation.yaw)) * temp[i].X +
+            AMath.DgCos(hRotation.pitch) * AMath.DgCos(hRotation.roll) * temp[i].Y +
+            (AMath.DgCos(hRotation.pitch) * AMath.DgSin(hRotation.roll) * AMath.DgSin(hRotation.yaw) - AMath.DgSin(hRotation.pitch) * AMath.DgCos(hRotation.yaw)) * temp[i].Z;
+
+            double Z = (AMath.DgSin(hRotation.pitch) * AMath.DgSin(hRotation.roll) * AMath.DgCos(hRotation.yaw) + AMath.DgCos(hRotation.pitch) * AMath.DgSin(hRotation.yaw)) * temp[i].X +
+            AMath.DgSin(hRotation.pitch) * AMath.DgCos(hRotation.roll) * temp[i].Y +
+            (AMath.DgSin(hRotation.pitch) * AMath.DgSin(hRotation.roll) * AMath.DgSin(hRotation.yaw) - AMath.DgCos(hRotation.pitch) * AMath.DgCos(hRotation.yaw)) * temp[i].Z;
+
+            temp[i] = new Point3d(X, Y, Z);
+        }
+
+        Angle vRotation = new Angle(angle.yaw,0,0);
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            double X = AMath.DgCos(vRotation.roll) * AMath.DgCos(vRotation.yaw) * temp[i].X + 
+            (-AMath.DgSin(vRotation.roll)) * temp[i].Y +
+            AMath.DgCos(vRotation.roll) * AMath.DgSin(vRotation.yaw) * temp[i].Z;
+
+            double Y = (AMath.DgCos(vRotation.pitch) * AMath.DgSin(vRotation.roll) * AMath.DgCos(vRotation.yaw) + AMath.DgSin(vRotation.pitch) * AMath.DgSin(vRotation.yaw)) * temp[i].X +
+            AMath.DgCos(vRotation.pitch) * AMath.DgCos(vRotation.roll) * temp[i].Y +
+            (AMath.DgCos(vRotation.pitch) * AMath.DgSin(vRotation.roll) * AMath.DgSin(vRotation.yaw) - AMath.DgSin(vRotation.pitch) * AMath.DgCos(vRotation.yaw)) * temp[i].Z;
+
+            double Z = (AMath.DgSin(vRotation.pitch) * AMath.DgSin(vRotation.roll) * AMath.DgCos(vRotation.yaw) + AMath.DgCos(vRotation.pitch) * AMath.DgSin(vRotation.yaw)) * temp[i].X +
+            AMath.DgSin(vRotation.pitch) * AMath.DgCos(vRotation.roll) * temp[i].Y +
+            (AMath.DgSin(vRotation.pitch) * AMath.DgSin(vRotation.roll) * AMath.DgSin(vRotation.yaw) - AMath.DgCos(vRotation.pitch) * AMath.DgCos(vRotation.yaw)) * temp[i].Z;
 
             temp[i] = new Point3d(X+position.X, Y+position.Y, Z+position.Z);
         }

@@ -7,14 +7,14 @@ public class Camera
     public Point3d Position { get; set; }
     public double FOV { get; set; }
     public Angle Angle { get; set; }
-    public CameraView CameraView { get; set; }
+    public CameraView2 CameraView { get; set; }
 
     public Camera(Point3d position, double FOV, Angle angle, Ratio ratio, double ratioScale)
     {
         this.Position = position;
         this.FOV = FOV;
         this.Angle = angle;
-        this.CameraView = new CameraView(this.Position, this.FOV, this.Angle, ratio, ratioScale);
+        this.CameraView = new CameraView2(this.Position, this.FOV, this.Angle, ratio, ratioScale);
     }
 
     public void YawAdd(double yaw)
