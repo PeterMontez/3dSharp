@@ -2,7 +2,7 @@ using System.Drawing;
 
 namespace _3dSharp;
 
-public class CameraView
+public class CameraView2
 {
     public Point3d[] Points { get; set; }= new Point3d[4];
     public Point3d Position { get; set; }
@@ -18,7 +18,7 @@ public class CameraView
     public Point3d[] MainPoints { get; set; } = new Point3d[4];
     public Point3d MainFOV { get; set; } = new Point3d(0, 0, 0);
 
-    public CameraView(Point3d position, double FOV, Angle angle, Ratio ratio, double ratioScale)
+    public CameraView2(Point3d position, double FOV, Angle angle, Ratio ratio, double ratioScale)
     {
         this.Ratio = ratio;
         this.FOV = FOV;
@@ -27,10 +27,6 @@ public class CameraView
         this.FOVpoint = GetCenter(position, FOV, angle);
         this.Position = position;
         this.Plane = PlaneFinder(this.FOVpoint, this.Position);
-        (this.ScreenAngle, this.ScreenDist) = GetScreenAngles(this.Ratio, this.FOV, this.Angle, this.RatioScale);
-        // this.Points = GetViewScreen(this.FOVpoint, angle, this.ScreenAngle, this.Plane);
-
-        // this.MainPoints = Points;
 
         this.MainPoints = TempPoints();
         this.Points = MainPoints;
@@ -39,11 +35,6 @@ public class CameraView
 
     public void Refresh()
     {
-        FOVpoint = GetCenter(Position, FOV, Angle);
-        Plane = PlaneFinder(FOVpoint, Position);
-        (ScreenAngle, ScreenDist) = GetScreenAngles(Ratio, FOV, Angle, RatioScale);
-        // Points = GetViewScreen(FOVpoint, Angle, ScreenAngle, Plane);
-        
         (FOVpoint, Points) = GetViewScreenV2(Angle, MainPoints, Position, MainFOV);
         Plane = PlaneFinder(FOVpoint, Position);
     }
@@ -65,29 +56,6 @@ public class CameraView
         points[1] = new Point3d(800, 450, -800);
         points[2] = new Point3d(800, 450, 800);
         points[3] = new Point3d(800,- 450, 800);
-
-        return points;
-    }
-
-    public Point3d[] GetViewScreen(Point3d center, Angle angle, Angle screenAngle, Plane plane)
-    {
-        Point3d[] points = new Point3d[4];
-
-        Angle crrAngle = new Angle(angle.AngleFixer(angle.yaw - screenAngle.yaw), angle.AngleFixer(angle.pitch - screenAngle.pitch), angle.roll);
-        // points[0] = GetPoint(this.position, this.screenDist, crrAngle);
-        points[0] = LinePlaneIntersec(new Line(Position, GetPoint(this.Position, FOV*10, crrAngle)), plane);
-
-        crrAngle = new Angle(angle.AngleFixer(angle.yaw - screenAngle.yaw), angle.AngleFixer(angle.pitch + screenAngle.pitch), angle.roll);
-        // points[1] = GetPoint(this.position, this.screenDist, crrAngle);
-        points[1] = LinePlaneIntersec(new Line(Position, GetPoint(this.Position, FOV*10, crrAngle)), plane);
-
-        crrAngle = new Angle(angle.AngleFixer(angle.yaw + screenAngle.yaw), angle.AngleFixer(angle.pitch + screenAngle.pitch), angle.roll);
-        // points[2] = GetPoint(this.position, this.screenDist, crrAngle);
-        points[2] = LinePlaneIntersec(new Line(Position, GetPoint(this.Position, FOV*10, crrAngle)), plane);
-
-        crrAngle = new Angle(angle.AngleFixer(angle.yaw + screenAngle.yaw), angle.AngleFixer(angle.pitch - screenAngle.pitch), angle.roll);
-        // points[3] = GetPoint(this.position, this.screenDist, crrAngle);
-        points[3] = LinePlaneIntersec(new Line(Position, GetPoint(this.Position, FOV*10, crrAngle)), plane);
 
         return points;
     }
