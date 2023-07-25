@@ -14,4 +14,19 @@ public static class AMath
     {
         return Math.Round(value, decimalPlaces, MidpointRounding.AwayFromZero);
     }
+
+    public static double DgCos(double deg)
+    {
+        return Math.Cos(AMath.DegToRad(deg));
+    }
+
+    public static double DgSin(double deg)
+    {
+        return Math.Sin(AMath.DegToRad(deg));
+    }
+
+    public static double DgTan(double deg)
+    {
+        return Math.Tan(AMath.DegToRad(deg));
+    }
 }

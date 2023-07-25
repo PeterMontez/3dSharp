@@ -5,25 +5,25 @@ namespace _3dSharp;
 
 public class BruteRenderer
 {
-    public List<Triangle> triangles { get; set; } = new List<Triangle>();
+    public List<Triangle> Triangles { get; set; } = new List<Triangle>();
 
-    public List<Triangle2d> rendered { get; set; } = new List<Triangle2d>();
+    public List<Triangle2d> Rendered { get; set; } = new List<Triangle2d>();
 
     public BruteRenderer(List<Triangle> triangles)
     {
-        this.triangles = triangles;
+        this.Triangles = triangles;
     }
 
     public List<Triangle2d> Render(Camera camera)
     {
-        Point3d position = camera.position;
-        Plane plane = camera.cameraView.plane;
-        Point3d[] points = camera.cameraView.points;
-        double maxDist = camera.cameraView.ratioScale * camera.cameraView.ratio.width;
-        double ratioScale = camera.cameraView.ratioScale;
-        Ratio ratio = camera.cameraView.ratio;
+        Point3d position = camera.Position;
+        Plane plane = camera.CameraView.Plane;
+        Point3d[] points = camera.CameraView.Points;
+        double maxDist = camera.CameraView.RatioScale * camera.CameraView.Ratio.width;
+        double ratioScale = camera.CameraView.RatioScale;
+        Ratio ratio = camera.CameraView.Ratio;
 
-        foreach (Triangle triangle in triangles)
+        foreach (Triangle triangle in Triangles)
         {
             Point[] fixedPoints = new Point[3];
 
@@ -38,10 +38,10 @@ public class BruteRenderer
 
             Triangle2d result = new Triangle2d(fixedPoints[0], fixedPoints[1], fixedPoints[2]);
 
-            rendered.Add(result);
+            Rendered.Add(result);
         }
 
-        return this.rendered;
+        return this.Rendered;
     }
 
     public Point3d LinePlaneIntersec(Line line, Plane plane)
