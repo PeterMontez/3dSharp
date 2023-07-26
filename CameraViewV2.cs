@@ -28,7 +28,7 @@ public class CameraView2
         this.Position = position;
         this.Plane = PlaneFinder(this.FOVpoint, this.Position);
 
-        this.MainPoints = TempPoints();
+        this.MainPoints = GetPoints();
         this.Points = MainPoints;
         this.MainFOV = FOVpoint;
     }
@@ -48,14 +48,14 @@ public class CameraView2
         return new Point3d(X+position.X, Y+position.Y, Z+position.Z);
     }
 
-    public Point3d[] TempPoints()
+    public Point3d[] GetPoints()
     {
         Point3d[] points = new Point3d[4];
 
-        points[0] = new Point3d(800, -450, -800);
-        points[1] = new Point3d(800, 450, -800);
-        points[2] = new Point3d(800, 450, 800);
-        points[3] = new Point3d(800,- 450, 800);
+        points[0] = new Point3d(FOV, -Ratio.height/2, -Ratio.width/2);
+        points[1] = new Point3d(FOV, Ratio.height/2, -Ratio.width/2);
+        points[2] = new Point3d(FOV, Ratio.height/2, Ratio.width/2);
+        points[3] = new Point3d(FOV,- Ratio.height/2, Ratio.width/2);
 
         return points;
     }
@@ -154,15 +154,6 @@ public class CameraView2
 
         return new Plane(-directionVector[0], -directionVector[1], -directionVector[2], result);
     }
-
-    public (Angle, double) GetScreenAngles(Ratio ratio, double FOV, Angle camAngle, double ratioScale)
-    {
-        Angle angle = new Angle(AMath.RadToDeg(Math.Atan(ratio.width*ratioScale/2/FOV)), AMath.RadToDeg(Math.Atan(ratio.height*ratioScale/2/FOV)), camAngle.roll);
-        double newDist = Math.Sqrt((ratio.width*ratioScale/2)*(ratio.width*ratioScale/2) + (ratio.height*ratioScale/2)*(ratio.height*ratioScale/2) + FOV*FOV);
-
-        return (angle, newDist);
-    }
-
 
 }
 

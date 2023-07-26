@@ -102,31 +102,31 @@ public class BruteRenderer
             return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
         }
 
-        // Point LeftSide(Point3d point3d, Point3d[] points, Ratio ratio, double ratioScale)
-        // {
-        //     double dist0 = (PointDist(point3d, points[0]));
-        //     double dist1 = (PointDist(point3d, points[1]));
-        //     double dist3 = (PointDist(point3d, points[3]));
+        Point LeftSide(Point3d point3d, Point3d[] points, Ratio ratio, double ratioScale)
+        {
+            double dist1 = (PointDist(point3d, points[1]));
+            double dist2 = (PointDist(point3d, points[2]));
+            double dist3 = (PointDist(point3d, points[3]));
 
-        //     double rHeight = (PointDist(points[0], points[1]));
-        //     double rWidth = (PointDist(points[1], points[2]));
+            double rHeight = (PointDist(points[2], points[3]));
+            double rWidth = (PointDist(points[1], points[2]));
 
-        //     double p23Cos = ((dist0*dist0) - (dist1*dist1) - (rHeight*rHeight)) / (-2 * dist0 * rHeight);
+            double p23Cos = ((dist3*dist3) - (dist2*dist2) - (rHeight*rHeight)) / (-2 * dist2 * rHeight);
 
-        //     double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
+            double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
 
-        //     double Y = p23Cos * dist2;
+            double Y = p23Cos * dist2;
 
-        //     double Y2 = Math.Sin(Math.Acos(p12cos)) * dist1;
+            double Y2 = Math.Sin(Math.Acos(p12cos)) * dist1;
 
-        //     double X = Math.Sin(Math.Acos(p23Cos)) * dist2;
+            double X = Math.Sin(Math.Acos(p23Cos)) * dist2;
 
-        //     double X2 = p12cos * dist1;
+            double X2 = p12cos * dist1;
 
-        //     X = (X2*0.98 > rWidth - X) ? rWidth + X : rWidth - X;
+            X = (X2*0.98 > rWidth - X) ? rWidth + X : rWidth - X;
 
-        //     return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
-        // }
+            return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
+        }
 
         return RightSide();
 
