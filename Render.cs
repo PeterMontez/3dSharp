@@ -42,8 +42,6 @@ public class BruteRenderer
 
             Triangle2d result = new Triangle2d(fixedPoints[0], fixedPoints[1], fixedPoints[2]);
 
-            Rendered.Add(result);
-
             if (ValidateTriangle(result, ratio))
                 Rendered.Add(result);
         }
