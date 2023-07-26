@@ -11,7 +11,7 @@ public class BruteRenderer
 
     public BruteRenderer(List<Triangle> triangles)
     {
-        this.Triangles = triangles;
+        Triangles = triangles;
     }
 
     public List<Triangle2d> Render(Camera camera)
@@ -22,36 +22,30 @@ public class BruteRenderer
         double maxDist = camera.CameraView.RatioScale * camera.CameraView.Ratio.width;
         double ratioScale = camera.CameraView.RatioScale;
         Ratio ratio = camera.CameraView.Ratio;
+        byte RenderLogic = GetDirection(position, plane);
 
         foreach (Triangle triangle in Triangles)
         {
+            if (!RenderCheck(triangle, plane, RenderLogic))
+                continue;
 
-            Point[] RightRender()
-            {
-                Point[] fixedPoints = new Point[3];
+            Point[] fixedPoints = new Point[3];
 
-                Point3d intersec = LinePlaneIntersec(new Line(triangle.points[0], position), plane);
-                fixedPoints[0] = PointFixer(0, intersec, points, ratio, ratioScale);
+            Point3d intersec = LinePlaneIntersec(new Line(triangle.points[0], position), plane);
+            fixedPoints[0] = PointFixer(intersec, points, ratio, ratioScale);
 
-                intersec = LinePlaneIntersec(new Line(triangle.points[1], position), plane);
-                fixedPoints[1] = PointFixer(0, intersec, points, ratio, ratioScale);
+            intersec = LinePlaneIntersec(new Line(triangle.points[1], position), plane);
+            fixedPoints[1] = PointFixer(intersec, points, ratio, ratioScale);
 
-                intersec = LinePlaneIntersec(new Line(triangle.points[2], position), plane);
-                fixedPoints[2] = PointFixer(0, intersec, points, ratio, ratioScale);
-
-                return fixedPoints;
-            }
-
-            Point[] fixedPoints = RightRender();
+            intersec = LinePlaneIntersec(new Line(triangle.points[2], position), plane);
+            fixedPoints[2] = PointFixer(intersec, points, ratio, ratioScale);
 
             Triangle2d result = new Triangle2d(fixedPoints[0], fixedPoints[1], fixedPoints[2]);
 
+            Rendered.Add(result);
 
             if (ValidateTriangle(result, ratio))
-            {
                 Rendered.Add(result);
-            }
-            
         }
 
         return this.Rendered;
@@ -74,77 +68,51 @@ public class BruteRenderer
         return Math.Sqrt((p1.X-p2.X)*(p1.X-p2.X) + (p1.Y-p2.Y)*(p1.Y-p2.Y) + (p1.Z-p2.Z)*(p1.Z-p2.Z));
     }
 
-    public Point PointFixer(byte side, Point3d point3d, Point3d[] points, Ratio ratio, double ratioScale)
+    public Point PointFixer(Point3d point3d, Point3d[] points, Ratio ratio, double ratioScale)
     {
-        Point RightSide()
+        double dist1 = PointDist(point3d, points[1]);
+        double dist2 = PointDist(point3d, points[2]);
+        double dist3 = PointDist(point3d, points[3]);
+
+        double rHeight = PointDist(points[2], points[3]);
+        double rWidth = PointDist(points[1], points[2]);
+
+        double p23cos = ((dist3*dist3) - (dist2*dist2) - (rHeight*rHeight)) / (-2 * dist2 * rHeight);
+        double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
+
+        double Y = p23cos * dist2;
+        double X = p12cos * dist1;
+
+        return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
+    }
+
+    public byte GetDirection(Point3d position, Plane plane)
+    {
+        if (plane.X*position.X + plane.Y*position.Y + plane.Z*position.Z - plane.result > 0)
+            return 0;
+        return 1;
+    }
+
+    public bool RenderCheck(Triangle triangle, Plane plane, byte direction)
+    {
+        foreach (var point in triangle.points)
         {
-            double dist1 = (PointDist(point3d, points[1]));
-            double dist2 = (PointDist(point3d, points[2]));
-            double dist3 = (PointDist(point3d, points[3]));
-
-            double rHeight = (PointDist(points[2], points[3]));
-            double rWidth = (PointDist(points[1], points[2]));
-
-            double p23Cos = ((dist3*dist3) - (dist2*dist2) - (rHeight*rHeight)) / (-2 * dist2 * rHeight);
-
-            double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
-
-            double Y = p23Cos * dist2;
-
-            double Y2 = Math.Sin(Math.Acos(p12cos)) * dist1;
-
-            double X = Math.Sin(Math.Acos(p23Cos)) * dist2;
-
-            double X2 = p12cos * dist1;
-
-            X = (X2*0.98 > rWidth - X) ? rWidth + X : rWidth - X;
-
-            return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
+            if (plane.X*point.X + plane.Y*point.Y + plane.Z*point.Z - plane.result > 0 && direction == 1)
+                return true;
+            else if (plane.X*point.X + plane.Y*point.Y + plane.Z*point.Z - plane.result <= 0 && direction == 0)
+                return true;
         }
-
-        Point LeftSide(Point3d point3d, Point3d[] points, Ratio ratio, double ratioScale)
-        {
-            double dist1 = (PointDist(point3d, points[1]));
-            double dist2 = (PointDist(point3d, points[2]));
-            double dist3 = (PointDist(point3d, points[3]));
-
-            double rHeight = (PointDist(points[2], points[3]));
-            double rWidth = (PointDist(points[1], points[2]));
-
-            double p23Cos = ((dist3*dist3) - (dist2*dist2) - (rHeight*rHeight)) / (-2 * dist2 * rHeight);
-
-            double p12cos = ((dist2*dist2) - (rWidth*rWidth) - (dist1*dist1)) / (-2 * rWidth * dist1);
-
-            double Y = p23Cos * dist2;
-
-            double Y2 = Math.Sin(Math.Acos(p12cos)) * dist1;
-
-            double X = Math.Sin(Math.Acos(p23Cos)) * dist2;
-
-            double X2 = p12cos * dist1;
-
-            X = (X2*0.98 > rWidth - X) ? rWidth + X : rWidth - X;
-
-            return new Point((int)X*ratio.scrHeight/ratio.height, (int)Y*ratio.scrHeight/ratio.height);
-        }
-
-        return RightSide();
-
+        return false;
     }
 
     public bool ValidateTriangle(Triangle2d triangle, Ratio ratio)
     {
-        double GetDist(Point p1, Point p2)
-        {
-            return Math.Sqrt(Math.Abs((p1.X-p2.X)*(p1.X-p2.X) + (p1.Y-p2.Y)*(p1.Y-p2.Y)));
-        }
+        double GetDist(Point p1, Point p2) => Math.Sqrt(Math.Abs((p1.X-p2.X)*(p1.X-p2.X) + (p1.Y-p2.Y)*(p1.Y-p2.Y)));
 
         for (int i = 0; i < 3; i++)
         {
             if (GetDist(triangle.points[i], triangle.points[i+1 > 2 ? 0 : i+1]) > ratio.scrHeight * 1.5)
-            {
                 return false;
-            }
         }
 
         return true;
